@@ -202,7 +202,7 @@ export default function SubmitBookmarkPage() {
                     type="button"
                     variant="outline"
                     onClick={() => {
-                      setStatusMessage('Draft saved locally.')
+                      setStatusMessage('Draft saved.')
                       toast({
                         title: 'Draft saved',
                         description: 'Your bookmark draft is saved on this device.',

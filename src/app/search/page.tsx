@@ -67,6 +67,17 @@ export default async function SearchPage({
       matchText(tagsText, normalized)
     );
   });
+  const availableCategories = Array.from(
+    new Set(
+      posts
+        .map((post) => {
+          const content = post.content && typeof post.content === "object" ? post.content : {};
+          const raw = (content as any).category;
+          return typeof raw === "string" ? raw.trim() : "";
+        })
+        .filter((item) => item.length > 0)
+    )
+  ).sort((a, b) => a.localeCompare(b));
 
   const results = normalized.length > 0 ? filtered : filtered.slice(0, 24);
 
@@ -81,8 +92,19 @@ export default async function SearchPage({
       actions={
         <form action="/search" className="flex w-full gap-2 sm:w-auto">
           <input type="hidden" name="master" value="1" />
-          {category ? <input type="hidden" name="category" value={category} /> : null}
           {task ? <input type="hidden" name="task" value={task} /> : null}
+          <select
+            name="category"
+            defaultValue={category}
+            className="h-11 rounded-md border border-input bg-background px-3 text-sm text-foreground outline-none ring-offset-background transition-[color,box-shadow] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            <option value="">All Categories</option>
+            {availableCategories.map((item) => (
+              <option key={item} value={item.toLowerCase()}>
+                {item}
+              </option>
+            ))}
+          </select>
           <div className="relative w-full sm:w-80">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input

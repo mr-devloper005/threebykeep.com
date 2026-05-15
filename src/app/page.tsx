@@ -419,40 +419,117 @@ function CurationHome({
   articlePosts: SitePost[]
 }) {
   const tone = getCurationTone()
-  const collections = bookmarkPosts.length ? bookmarkPosts.slice(0, 4) : articlePosts.slice(0, 4)
+  const collections = bookmarkPosts.length ? bookmarkPosts.slice(0, 6) : articlePosts.slice(0, 6)
+  const heroCards = collections.slice(0, 5)
+  const featureCards = collections.slice(0, 2)
 
   return (
     <main className={tone.shell}>
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-18">
-        <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-start">
-          <div>
-            <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] ${tone.badge}`}>
-              <Bookmark className="h-3.5 w-3.5" />
-              Latest shared bookmarks
-            </span>
-            <h1 className={`mt-6 max-w-4xl text-5xl font-semibold tracking-[-0.06em] sm:text-6xl ${tone.title}`}>
-              Save useful links, tag them clearly, and find them quickly when work depends on them.
-            </h1>
-            <p className={`mt-6 max-w-2xl text-base leading-8 ${tone.muted}`}>{SITE_CONFIG.description}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href={primaryTask?.route || '/sbm'} className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${tone.action}`}>
-                Open collections
+      <section className="border-b border-[#e4d6c8] bg-[#f5f4f2]">
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+          <div className="grid gap-10 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
+            <div>
+              <h1 className={`mt-6 max-w-3xl text-5xl font-semibold tracking-[-0.055em] sm:text-6xl ${tone.title}`}>
+                Bring your favourite ideas to life.
+              </h1>
+              <p className={`mt-6 max-w-2xl text-base leading-8 ${tone.muted}`}>
+                Discover curated links, visual references, and practical resources shared by people who care about quality and relevance.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link href={primaryTask?.route || '/sbm'} className="inline-flex items-center gap-2 rounded-full bg-[#cf1d35] px-6 py-3 text-sm font-semibold text-white hover:bg-[#b6192f]">
+                  Join for free
+                </Link>
+              </div>
+            </div>
+
+            <div className="relative mx-auto w-full max-w-[560px]">
+              <div className="grid grid-cols-6 gap-3">
+                {heroCards[0] ? (
+                  <Link
+                    href={getTaskHref(resolveTaskKey(heroCards[0].task, 'sbm'), heroCards[0].slug)}
+                    className="relative col-span-4 row-span-2 min-h-[300px] overflow-hidden rounded-[2rem] shadow-[0_24px_60px_rgba(35,18,12,0.2)]"
+                  >
+                    <ContentImage src={getPostImage(heroCards[0])} alt={heroCards[0].title} fill className="object-cover" />
+                  </Link>
+                ) : null}
+                {heroCards[1] ? (
+                  <Link
+                    href={getTaskHref(resolveTaskKey(heroCards[1].task, 'sbm'), heroCards[1].slug)}
+                    className="relative col-span-2 min-h-[140px] overflow-hidden rounded-[1.5rem] shadow-[0_16px_40px_rgba(35,18,12,0.16)]"
+                  >
+                    <ContentImage src={getPostImage(heroCards[1])} alt={heroCards[1].title} fill className="object-cover" />
+                  </Link>
+                ) : null}
+                {heroCards[2] ? (
+                  <Link
+                    href={getTaskHref(resolveTaskKey(heroCards[2].task, 'sbm'), heroCards[2].slug)}
+                    className="relative col-span-2 min-h-[140px] overflow-hidden rounded-[1.5rem] shadow-[0_16px_40px_rgba(35,18,12,0.16)]"
+                  >
+                    <ContentImage src={getPostImage(heroCards[2])} alt={heroCards[2].title} fill className="object-cover" />
+                  </Link>
+                ) : null}
+                {heroCards[3] ? (
+                  <Link
+                    href={getTaskHref(resolveTaskKey(heroCards[3].task, 'sbm'), heroCards[3].slug)}
+                    className="relative col-span-3 min-h-[170px] overflow-hidden rounded-[1.7rem] shadow-[0_16px_40px_rgba(35,18,12,0.16)]"
+                  >
+                    <ContentImage src={getPostImage(heroCards[3])} alt={heroCards[3].title} fill className="object-cover" />
+                  </Link>
+                ) : null}
+                {heroCards[4] ? (
+                  <Link
+                    href={getTaskHref(resolveTaskKey(heroCards[4].task, 'sbm'), heroCards[4].slug)}
+                    className="relative col-span-3 min-h-[170px] overflow-hidden rounded-[1.7rem] shadow-[0_16px_40px_rgba(35,18,12,0.16)]"
+                  >
+                    <ContentImage src={getPostImage(heroCards[4])} alt={heroCards[4].title} fill className="object-cover" />
+                  </Link>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+          <div className="text-center">
+            <h2 className="text-4xl font-semibold tracking-[-0.04em] text-[#241821] sm:text-6xl">
+              Bring your favourite ideas to life
+            </h2>
+            <p className="mx-auto mt-5 max-w-3xl text-lg leading-8 text-[#5f4e45]">
+              With {SITE_CONFIG.name}, you can unlock organized bookmarking flows that spark creativity and help you find better inspiration.
+            </p>
+          </div>
+
+          <div className="mt-16 grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+            <div className="relative mx-auto w-full max-w-[560px] overflow-hidden rounded-[2.6rem] bg-[#e8e6e1] p-6">
+              {featureCards[0] ? (
+                <Link href={getTaskHref(resolveTaskKey(featureCards[0].task, 'sbm'), featureCards[0].slug)} className="relative block h-[420px] overflow-hidden rounded-[2rem]">
+                  <ContentImage src={getPostImage(featureCards[0])} alt={featureCards[0].title} fill className="object-cover" />
+                </Link>
+              ) : null}
+              <div className="absolute left-4 top-8 rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-[#261811] shadow-lg">
+                Search by category
+              </div>
+              <div className="absolute bottom-8 right-4 rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-[#261811] shadow-lg">
+                Discover visually
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-5xl font-semibold tracking-[-0.04em] text-[#241821]">
+                Search visually with image-rich bookmarks
+              </h3>
+              <p className="mt-5 max-w-xl text-xl leading-9 text-[#5f4e45]">
+                Find objects, styles, tools, and references inside curated visual posts to explore more ideas you&apos;ll love.
+              </p>
+              <Link href={primaryTask?.route || '/sbm'} className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#cf1d35] px-6 py-3 text-base font-semibold text-white hover:bg-[#b6192f]">
+                Learn more
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            {collections.map((post) => (
-              <Link key={post.id} href={getTaskHref(resolveTaskKey(post.task, 'sbm'), post.slug)} className={`rounded-[1.8rem] p-6 ${tone.panel}`}>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Latest upload</p>
-                <h3 className="mt-3 text-2xl font-semibold">{post.title}</h3>
-                <p className={`mt-3 text-sm leading-8 ${tone.muted}`}>{post.summary || 'Fresh bookmark upload with practical context and source link.'}</p>
-              </Link>
-            ))}
-          </div>
         </div>
-
       </section>
     </main>
   )

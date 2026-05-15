@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { ArrowUp, ExternalLink, Bookmark, MessageSquare, Share2 } from 'lucide-react'
+import { ArrowUp, Bookmark, MessageSquare, Share2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useToast } from '@/components/ui/use-toast'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -106,45 +106,39 @@ export function EnhancedSBMDetailCard({
   }
 
   return (
-    <div>
-      <Card className="overflow-hidden border-0 shadow-none">
-        <CardContent className="p-0">
-          {/* Main Content */}
-          <div className="space-y-6">
-            {/* Title Section */}
-            <div className="space-y-4">
-              <div className="flex items-start gap-4">
-                <div className="flex-1">
-                  <h1 className="text-3xl font-bold text-foreground leading-tight">
-                    {title}
-                  </h1>
-                  <div className="mt-3 flex items-center gap-4 text-sm text-muted-foreground">
-                    {author && (
-                      <div className="flex items-center gap-2">
-                        <Avatar className="h-6 w-6">
-                          <AvatarImage src={author.avatar} alt={author.name} />
-                          <AvatarFallback className="text-xs">
-                            {author.name.charAt(0)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span>{author.name}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
+    <div className="relative isolate overflow-hidden rounded-[2rem] border border-rose-200/60 bg-gradient-to-br from-rose-50 via-orange-50 to-amber-100/50 p-1 shadow-[0_26px_70px_-32px_rgba(159,18,57,0.45)]">
+      <div className="pointer-events-none absolute -left-24 -top-24 h-64 w-64 rounded-full bg-rose-300/25 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -right-16 h-64 w-64 rounded-full bg-amber-300/25 blur-3xl" />
 
-              {/* Category Badge */}
-              <div className="flex items-center gap-3">
-                <Badge variant="secondary" className="text-xs font-medium">
+      <Card className="relative overflow-hidden rounded-[1.6rem] border border-rose-200/70 bg-white/85 backdrop-blur-sm">
+        <CardContent className="p-6 sm:p-8">
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <div className="space-y-4">
+                <Badge className="border-0 bg-rose-100 text-[10px] font-semibold uppercase tracking-[0.16em] text-rose-700">
                   {category}
                 </Badge>
+                <h1 className="max-w-5xl text-3xl font-semibold leading-tight tracking-[-0.02em] text-slate-900 sm:text-4xl">
+                  {title}
+                </h1>
+                {author && (
+                  <div className="flex items-center gap-3 rounded-full border border-rose-200/70 bg-rose-50 px-2.5 py-1.5 pr-4">
+                    <Avatar className="h-8 w-8 ring-2 ring-white">
+                      <AvatarImage src={author.avatar} alt={author.name} />
+                      <AvatarFallback className="bg-rose-200 text-[11px] font-semibold text-rose-700">
+                        {author.name.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="text-xs font-medium uppercase tracking-[0.14em] text-rose-800/90">
+                      {author.name}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Description */}
-            <div 
-              className="text-base leading-7 text-muted-foreground [&>*]:inline [&>*]:m-0 [&>*]:p-0 [&_a]:text-red-500 [&_a]:underline [&_a]:underline-offset-2"
+            <div
+              className="rounded-2xl border border-rose-100 bg-white/70 p-5 text-[1.02rem] leading-8 text-slate-700 shadow-sm [&>*]:inline [&>*]:m-0 [&>*]:p-0 [&_a]:font-semibold [&_a]:text-rose-600 [&_a]:underline [&_a]:underline-offset-4"
               dangerouslySetInnerHTML={{
                 __html: (() => {
                   let html = description
@@ -168,34 +162,49 @@ export function EnhancedSBMDetailCard({
               }}
             />
 
-            {/* Tags */}
             {tags.length > 0 && (
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2.5">
                 {tags.map((tag) => (
-                  <Badge key={tag} variant="outline" className="text-xs">
+                  <Badge
+                    key={tag}
+                    variant="outline"
+                    className="rounded-full border-rose-200 bg-white px-3 py-1 text-[11px] font-medium uppercase tracking-[0.08em] text-slate-700"
+                  >
                     {tag}
                   </Badge>
                 ))}
               </div>
             )}
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3 pt-4 border-t">
+            <div className="flex flex-wrap items-center gap-3 border-t border-rose-200/80 pt-5">
               <Button
                 variant={saved ? 'default' : 'outline'}
                 size="sm"
                 onClick={handleSave}
-                className="gap-2"
+                className={cn(
+                  "rounded-full border-rose-300 bg-white px-4 font-semibold text-slate-800 hover:bg-rose-50",
+                  saved && "border-rose-500 bg-rose-600 text-white hover:bg-rose-700"
+                )}
               >
-                <Bookmark className={cn('h-4 w-4', saved && 'fill-current')} />
+                <Bookmark className={cn('mr-2 h-4 w-4', saved && 'fill-current')} />
                 {savesCount}
               </Button>
-              <Button variant="outline" size="sm" onClick={handleComments} className="gap-2">
-                <MessageSquare className="h-4 w-4" />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleComments}
+                className="rounded-full border-rose-300 bg-white px-4 font-semibold text-slate-800 hover:bg-rose-50"
+              >
+                <MessageSquare className="mr-2 h-4 w-4" />
                 {commentsCount}
               </Button>
-              <Button variant="outline" size="sm" onClick={handleShare} className="gap-2">
-                <Share2 className="h-4 w-4" />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleShare}
+                className="rounded-full border-rose-300 bg-white px-4 font-semibold text-slate-800 hover:bg-rose-50"
+              >
+                <Share2 className="mr-2 h-4 w-4" />
                 Share
               </Button>
             </div>
