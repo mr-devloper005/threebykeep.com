@@ -223,6 +223,15 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
               Save high-value links, docs, and tools in one stream. Each bookmark includes source context so teams can quickly revisit
               trusted resources without searching from scratch.
             </p>
+            <div className="mt-6">
+              <Link
+                href="/sbm/submit"
+                className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${ui.button}`}
+              >
+                Submit a Link
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
             <div className="mt-5 flex flex-wrap gap-3 text-xs">
               <span className={`rounded-full px-3 py-1 ${ui.soft}`}>Latest community uploads</span>
               <span className={`rounded-full px-3 py-1 ${ui.soft}`}>Tagged by category</span>

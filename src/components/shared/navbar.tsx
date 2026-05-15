@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Search, Menu, X, User, FileText, Building2, LayoutGrid, Tag, Image as ImageIcon, ChevronRight, Sparkles, MapPin, Plus } from 'lucide-react'
+import { Search, Menu, X, User, FileText, Building2, LayoutGrid, Tag, Image as ImageIcon, MapPin, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/lib/auth-context'
 import { SITE_CONFIG, type TaskKey } from '@/lib/site-config'
@@ -91,7 +91,17 @@ export function Navbar() {
   const { isAuthenticated } = useAuth()
   const { recipe } = getFactoryState()
 
-  const navigation = useMemo(() => SITE_CONFIG.tasks.filter((task) => task.key !== 'profile' && task.key !== 'article' && task.key !== 'listing'), [])
+  const navigation = useMemo(
+    () =>
+      SITE_CONFIG.tasks.filter(
+        (task) =>
+          task.key !== 'profile' &&
+          task.key !== 'article' &&
+          task.key !== 'listing' &&
+          task.key !== 'classified'
+      ),
+    []
+  )
   const primaryTaskKey = siteContent.taskPriority.primary
   const secondaryTaskKey = siteContent.taskPriority.secondary
   const featuredPrimary = navigation.find((task) => task.key === primaryTaskKey) || navigation[0]
@@ -120,20 +130,8 @@ export function Navbar() {
               </div>
               <div className="min-w-0 hidden sm:block">
                 <span className="block truncate text-xl font-semibold">{SITE_CONFIG.name}</span>
-                <span className="block text-[10px] uppercase tracking-[0.24em] opacity-60">{siteContent.navbar.tagline}</span>
               </div>
             </Link>
-
-            <div className="hidden items-center gap-4 xl:flex">
-              {featuredNavigation.map((task) => {
-                const isActive = pathname.startsWith(task.route)
-                return (
-                  <Link key={task.key} href={task.route} className={cn('rounded-full px-4 py-2 text-sm font-semibold transition-colors', isActive ? 'bg-foreground text-background' : `${palette.nav} bg-transparent`)}>
-                    {task.label}
-                  </Link>
-                )
-              })}
-            </div>
           </div>
 
           <div className="hidden min-w-0 flex-1 items-center justify-center lg:flex">
@@ -148,13 +146,6 @@ export function Navbar() {
           </div>
 
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-            {primaryTask ? (
-              <Link href={primaryTask.route} className="hidden items-center gap-2 rounded-full border border-current/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] opacity-75 md:inline-flex">
-                <Sparkles className="h-3.5 w-3.5" />
-                {primaryTask.label}
-              </Link>
-            ) : null}
-
             {isAuthenticated ? (
               <NavbarAuthControls />
             ) : (
@@ -215,71 +206,13 @@ export function Navbar() {
             </div>
             <div className="min-w-0 hidden sm:block">
               <span className="block truncate text-xl font-semibold">{SITE_CONFIG.name}</span>
-              <span className="hidden text-[10px] uppercase tracking-[0.28em] opacity-70 sm:block">{siteContent.navbar.tagline}</span>
             </div>
           </Link>
 
-          {isEditorial ? (
-            <div className="hidden min-w-0 flex-1 items-center gap-4 xl:flex">
-              <div className="h-px flex-1 bg-[#d8c8bb]" />
-              {featuredNavigation.map((task) => {
-                const isActive = pathname.startsWith(task.route)
-                return (
-                  <Link key={task.key} href={task.route} className={cn('text-sm font-semibold uppercase tracking-[0.18em] transition-colors', isActive ? 'text-[#2f1d16]' : 'text-[#7b6254] hover:text-[#2f1d16]')}>
-                    {task.label}
-                  </Link>
-                )
-              })}
-              <div className="h-px flex-1 bg-[#d8c8bb]" />
-            </div>
-          ) : isFloating ? (
-            <div className="hidden min-w-0 flex-1 items-center gap-2 xl:flex">
-              {featuredNavigation.map((task) => {
-                const Icon = taskIcons[task.key] || LayoutGrid
-                const isActive = pathname.startsWith(task.route)
-                return (
-                  <Link key={task.key} href={task.route} className={cn('flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors', isActive ? style.active : style.idle)}>
-                    <Icon className="h-4 w-4" />
-                    <span>{task.label}</span>
-                  </Link>
-                )
-              })}
-            </div>
-          ) : isUtility ? (
-            <div className="hidden min-w-0 flex-1 items-center gap-2 xl:flex">
-              {featuredNavigation.map((task) => {
-                const isActive = pathname.startsWith(task.route)
-                return (
-                  <Link key={task.key} href={task.route} className={cn('rounded-lg px-3 py-2 text-sm font-semibold transition-colors', isActive ? style.active : style.idle)}>
-                    {task.label}
-                  </Link>
-                )
-              })}
-            </div>
-          ) : (
-            <div className="hidden min-w-0 flex-1 items-center gap-1 overflow-hidden xl:flex">
-              {featuredNavigation.map((task) => {
-                const Icon = taskIcons[task.key] || LayoutGrid
-                const isActive = pathname.startsWith(task.route)
-                return (
-                  <Link key={task.key} href={task.route} className={cn('flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold transition-colors whitespace-nowrap', isActive ? style.active : style.idle)}>
-                    <Icon className="h-4 w-4" />
-                    <span>{task.label}</span>
-                  </Link>
-                )
-              })}
-            </div>
-          )}
+          <div className="hidden min-w-0 flex-1 xl:block" />
         </div>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          {primaryTask && (recipe.navbar === 'utility-bar' || recipe.navbar === 'floating-bar') ? (
-            <Link href={primaryTask.route} className="hidden items-center gap-2 rounded-full border border-current/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] opacity-80 md:inline-flex">
-              <Sparkles className="h-3.5 w-3.5" />
-              {primaryTask.label}
-            </Link>
-          ) : null}
-
           <Button variant="ghost" size="icon" asChild className="hidden rounded-full md:flex">
             <Link href="/search">
               <Search className="h-5 w-5" />
@@ -305,16 +238,6 @@ export function Navbar() {
           </Button>
         </div>
       </nav>
-
-      {isFloating && primaryTask ? (
-        <div className="mx-auto hidden max-w-7xl px-4 pb-3 sm:px-6 lg:block lg:px-8">
-          <Link href={primaryTask.route} className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/8 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-200 backdrop-blur hover:bg-white/12">
-            Featured surface
-            <span>{primaryTask.label}</span>
-            <ChevronRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
-      ) : null}
 
       {isMobileMenuOpen && (
         <div className={style.mobile}>
